@@ -60,6 +60,7 @@
             <order_status translate="label">
               <label>New order status</label>
               <frontend_type>select</frontend_type>
+              <config_path>payment/espay/default_order_status</config_path>
               <source_model>adminhtml/system_config_source_order_status</source_model>
               <show_in_default>1</show_in_default>
               <show_in_website>1</show_in_website>
@@ -100,6 +101,24 @@
                 <show_in_website>1</show_in_website>
                 <show_in_store>0</show_in_store>
             </max_order_total>
+            <credit_card_fee translate="label">
+                <label>Credit Card Fee</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/ccfee</config_path>
+                <sort_order>10</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </credit_card_fee>
+            <transaction_fee translate="label">
+                <label>Transaction Fee</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/trxfee</config_path>
+                <sort_order>11</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee>
           </fields>
         </espaypaymentmethod>
       </groups>

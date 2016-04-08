@@ -56,7 +56,8 @@
         <payment_action>sale</payment_action>
         <min_order_total>5000</min_order_total>
         <max_order_total>100000000</max_order_total>
-
+        <credit_card_fee>3%</credit_card_fee>
+        <transaction_fee>5000</transaction_fee>
       </espaypaymentmethod>
     </payment>
   </default>
