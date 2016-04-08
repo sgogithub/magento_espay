@@ -1,5 +1,5 @@
 # Espay Payment Gateway Magento plugin
-Let your Magento store integrated with Veritrans payment gateway.
+Let your Magento store integrated with Espay payment gateway.
 
 Description
 
