@@ -28,7 +28,7 @@ PHP version 5.4 or greater
 Magento standard checkout (Onepage Checkout)
 Manual Instalation
 
-Extract the magento_espay.zip
+Extract the magento_espay-master.zip
 
 Locate the root Magento directory of your shop via FTP connection
 
@@ -36,7 +36,7 @@ Copy and Merge the 'app' folders into magento root folder
 
 In your Magento admin area, enable the Espay plug-in and insert your merchant details (Payment Key), environment you use.
 
-These method may require you to modified this module, since the bank need a certain messages shown on the landing page. 
+These method may require you to modified this module, since the bank need a certain messages shown on the landing page.
 Get help
 
 Technical support
