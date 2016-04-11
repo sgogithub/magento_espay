@@ -56,7 +56,13 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
         ->loadByIncrementId($orderIncrementId);
     $sessionId = Mage::getSingleton('core/session');
     $orderData = $order->getData();
-    /* need to set payment data to Mage::getSingleton('core/session')->setPaymentData(); when checkout */
+
+    $productModel = Mage::getModel('catalog/product');
+    $paymentData = $sessionId->getPaymentData();
+    $espayPayment = explode(':', $paymentData['espay_payment_method']);
+
+    $productCode = $espayPayment[0];
+    $bankCode = $espayPayment[1];
 
     $urlJs =   Mage::getStoreConfig('payment/espay/environmentt') == 'production'? 'https://secure.sgo.co.id' : 'http://secure-dev.sgo.co.id';
     $key =   Mage::getStoreConfig('payment/espay/paymentid');
@@ -72,7 +78,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
     $this->loadLayout();
     $block = $this->getLayout()->createBlock('Mage_Core_Block_Template','espaypaymentmethod',array('template' => 'espaypaymentmethod/redirect.phtml'));
-    $block->assign(array('urlJs'=>$urlJs,'key'=>$key, 'totalAmount' => $totalAmount, 'orderId' => $orderIncrementId));
+    $block->assign(array('urlJs'=>$urlJs,'key'=>$key, 'totalAmount' => $totalAmount, 'orderId' => $orderIncrementId, 'bankCode' => $bankCode, 'productCode' => $productCode));
     $this->getLayout()->getBlock('content')->append($block);
     $this->renderLayout();
 
@@ -166,19 +172,33 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
   public function responseAction()
   {
-    if ($this->getRequest()->get("flag") == "1" && $this->getRequest()->get("orderId"))
+    $redirect = FALSE;
+    $productModel = Mage::getModel('espaypaymentmethod/paymentmethod');
+    $atmProducts = $productModel->atmProduct();
+    if ($this->getRequest()->get("id") && $this->getRequest()->get("product"))
     {
-      $orderId = $this->getRequest()->get("orderId");
-      $order = Mage::getModel('sales/order')->loadByIncrementId($orderId);
-      $order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW, true, 'Payment Success.');
-      $order->save();
+      if ($this->getRequest()->get("product") !== '' && $this->getRequest()->get("id") !== ''){
+        if (in_array($this->getRequest()->get("product"), $atmProducts) ){
+          $redirect = TRUE;
+        }else {
+          $order = Mage::getModel('sales/order')
+              ->loadByIncrementId($this->getRequest()->get("id"));
 
-      Mage::getSingleton('checkout/session')->unsQuoteId();
-      Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure'=> false));
+          $orderData = $order->getData();
+          if (!empty($orderData)){
+            if ($orderData['state'] === Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW){
+              $redirect = TRUE;
+            }
+          }
+        }
+      }
     }
-    else
-    {
-      Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/error', array('_secure'=> false));
+
+
+    if ($redirect){
+      Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure'=> false));
+    }else {
+      Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/failure', array('_secure'=> false));
     }
   }
 

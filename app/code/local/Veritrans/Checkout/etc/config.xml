@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Veritrans_Checkout>
+            <version>0.0.1</version>
+        </Veritrans_Checkout>
+    </modules>
+    <frontend>
+        <routers>
+            <checkout>
+                <args>
+                    <modules>
+                        <Veritrans_Checkout before="Mage_Checkout">Veritrans_Checkout</Veritrans_Checkout>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+    </frontend>
+</config>

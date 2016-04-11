@@ -1,5 +1,6 @@
 <?php
 $installer = $this;
+
 $installer->startSetup();
 $installer->run("
 ALTER TABLE `{$installer->getTable('sales/quote_payment')}`

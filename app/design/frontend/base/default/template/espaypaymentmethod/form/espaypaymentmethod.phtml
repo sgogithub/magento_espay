@@ -2,7 +2,9 @@
   <?php foreach ($this->getProducts() as $products):?>
   <div>
     <span>
-        <input type="radio" title="<?php  $products->productName ?>" name="espayProduct" value="<?php echo $products->productCode ?>:<?php echo $products->bankCode ?> " />
+        <?php $testing = $products->productCode.':'.$products->bankCode.':'.$products->productName ?>
+
+        <input type="radio" title="<?php  $products->productName ?>" name="payment[espay_payment_method]" <?php echo (trim($this->getInfoData('espay_payment_method')) ==  $testing ? 'checked="checked"' : '')?> value="<?php echo $products->productCode ?>:<?php echo $products->bankCode ?>:<?php echo $products->productName?>" />
     </span>
     <label><?php echo  $products->productName ?></label>
 

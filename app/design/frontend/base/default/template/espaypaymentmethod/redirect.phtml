@@ -1,9 +1,4 @@
 <?php
-$order = new Mage_Sales_Model_Order();
-$orderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
-$order->loadByIncrementId($orderId);
-?>
-<?php
 /**
  * Magento
  *
@@ -30,34 +25,22 @@ $order->loadByIncrementId($orderId);
  */
 ?>
 <div class="page-title">
-    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+    <h1 style="text-align: center;"><?php echo $this->__('Thank you for your purchase!') ?></h1>
 </div>
 <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
-<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+<h2 style="text-align: center;" class="sub-title"><?php echo $this->__('We are Redirecting You to The Payment Page') ?></h2>
+<p style="text-align: center;"><?php echo $this->__('Your order # is: <b>'.$orderId.'</b>') ?></p>
+<p style="text-align: center;"><?php echo $this->__('Please Do Not <b>Close</b>, <b>Refresh</b>,or click <b>Back</b> on this page') ?></p>
 
-<?php if ($this->getOrderId()):?>
-<?php if ($this->getCanViewOrder()) :?>
-    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
-<?php  else :?>
-    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
-<?php endif;?>
-    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
-<?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
-    <p>
-        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
-        <?php echo $this->getChildHtml() ?>
-    </p>
-<?php endif;?>
-<?php endif;?>
-<script type="text/javascript" src="http://secure-dev.sgo.co.id/public/signature/js"></script>
+<script type="text/javascript" src="<?php echo $urlJs?>/public/signature/js"></script>
         <script type="text/javascript">
             window.onload = function () {
                 var data = {
                     paymentId: '<?php echo $orderId;?>',
                     key: '<?php echo $key;?>',
-                    backUrl: encodeURIComponent ('https://google.com'),
-                    bankCode:'013',
-                    bankProduct :'PERMATAATM'
+                    backUrl: encodeURIComponent('<?php echo Mage::helper('espaypaymentmethod')->getBackUrl($productCode, $orderId); ?>'),
+                    bankCode:'<?= $bankCode?>',
+                    bankProduct :'<?= $productCode?>'
                 },
                 sgoPlusIframe = document.getElementById("sgoplus-iframe");
                 if (sgoPlusIframe !== null) {
@@ -66,4 +49,4 @@ $order->loadByIncrementId($orderId);
                 SGOSignature.receiveForm();
             };
         </script>
-        <iframe id="sgoplus-iframe" src="" scrolling="no" allowtransparency="true" frameborder="0" height="300"></iframe>
+<iframe id="sgoplus-iframe" src="" scrolling="no" allowtransparency="true" frameborder="0" height="300"></iframe>

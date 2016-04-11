@@ -9,16 +9,14 @@ class Plus_Espaypaymentmethod_Block_Info_Espaypaymentmethod extends Mage_Payment
     }
 
     $data = array();
-    if ($this->getInfo()->getCustomFieldOne())
+    if ($this->getInfo()->getEspayPaymentMethod())
     {
-      $data[Mage::helper('payment')->__('Custom Field One')] = $this->getInfo()->getCustomFieldOne();
+      $espayPayment = explode(':', $this->getInfo()->getEspayPaymentMethod());
+      $productName = $espayPayment[2];
+      $data[Mage::helper('payment')->__('Payment Method')] = $productName;
     }
 
-    if ($this->getInfo()->getCustomFieldTwo())
-    {
-      $data[Mage::helper('payment')->__('Custom Field Two')] = $this->getInfo()->getCustomFieldTwo();
-    }
-
+    die();
     $transport = parent::_prepareSpecificInformation($transport);
 
     return $transport->setData(array_merge($data, $transport->getData()));
