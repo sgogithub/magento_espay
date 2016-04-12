@@ -32,9 +32,13 @@ Extract the magento_espay-master.zip
 
 Locate the root Magento directory of your shop via FTP connection
 
-Copy and Merge the 'app' folders into magento root folder
+Copy and Merge the 'app' folders into your magento root folder
 
-In your Magento admin area, enable the Espay plug-in and insert your merchant details (Payment Key), environment you use.
+In your Magento admin area, enable the Espay plug-in and insert your merchant details such as Payment Key, service password, environment you use (sandbox, production), order status, minimum/maximum payment for using espay payment gateway, and new order status when order is just being made.
+
+please notify us your domain for to register on our system
+* your inquiry url : http(s)://yourdomain.com/espaypaymentmethod/payment/inquiry/
+* your payment notification url : http(s)://yourdomain.com/espaypaymentmethod/payment/report/
 
 These method may require you to modified this module, since the bank need a certain messages shown on the landing page.
 Get help

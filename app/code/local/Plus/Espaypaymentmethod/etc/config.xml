@@ -45,7 +45,7 @@
         <active>1</active>
         <model>espaypaymentmethod/paymentmethod</model>
         <order_status>pending</order_status>
-        <title>Espay Payment Method</title>
+        <title>Espay Payment Gateway</title>
         <allowspecific>0</allowspecific>
         <payment_action>sale</payment_action>
         <min_order_total>5000</min_order_total>
