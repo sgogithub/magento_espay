@@ -1,0 +1,18 @@
+<div class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
+  <?php foreach ($this->getProducts() as $products):?>
+  <div>
+    <span>
+        <?php $testing = $products->productCode.':'.$products->bankCode.':'.$products->productName ?>
+
+        <input type="radio" title="<?php  $products->productName ?>" name="payment[espay_payment_method]" <?php echo (trim($this->getInfoData('espay_payment_method')) ==  $testing ? 'checked="checked"' : '')?> value="<?php echo $testing?>" />
+    </span>
+    <label><?php echo  $products->productName ?></label>
+
+  </div>
+
+  <?php endforeach?>
+
+</div>
+<div>
+    <?php echo $this->getMethod()->getConfigData('message');?>
+</div>
