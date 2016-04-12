@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Plus_Espaypaymentmethod>
+      <version>1.0.0.1</version>
+    </Plus_Espaypaymentmethod>
+  </modules>
+
+  <global>
+
+    <helpers>
+      <espaypaymentmethod>
+        <class>Plus_Espaypaymentmethod_Helper</class>
+      </espaypaymentmethod>
+    </helpers>
+
+    <blocks>
+      <espaypaymentmethod>
+        <class>Plus_Espaypaymentmethod_Block</class>
+      </espaypaymentmethod>
+    </blocks>
+
+    <models>
+      <espaypaymentmethod>
+        <class>Plus_Espaypaymentmethod_Model</class>
+      </espaypaymentmethod>
+    </models>
+
+    <resources>
+      <espaypaymentmethod_setup>
+        <setup>
+          <module>Plus_Espaypaymentmethod</module>
+          <class>Plus_Espaypaymentmethod_Model_Resource_Setup</class>
+        </setup>
+       <connection>
+           <use>core_setup</use>
+       </connection>
+      </espaypaymentmethod_setup>
+    </resources>
+  </global>
+
+  <default>
+    <payment>
+      <espaypaymentmethod>
+        <active>1</active>
+        <model>espaypaymentmethod/paymentmethod</model>
+        <order_status>pending</order_status>
+        <title>Espay Payment Method</title>
+        <allowspecific>0</allowspecific>
+        <payment_action>sale</payment_action>
+        <min_order_total>5000</min_order_total>
+        <max_order_total>100000000</max_order_total>
+        <credit_card_fee>3%</credit_card_fee>
+        <transaction_fee>5000</transaction_fee>
+      </espaypaymentmethod>
+    </payment>
+  </default>
+
+  <frontend>
+    <routers>
+      <espaypaymentmethod>
+        <use>standard</use>
+        <args>
+          <module>Plus_Espaypaymentmethod</module>
+          <frontName>espaypaymentmethod</frontName>
+        </args>
+      </espaypaymentmethod>
+    </routers>
+  </frontend>
+</config>
