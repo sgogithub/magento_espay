@@ -16,7 +16,6 @@ class Plus_Espaypaymentmethod_Block_Info_Espaypaymentmethod extends Mage_Payment
       $data[Mage::helper('payment')->__('Payment Method')] = $productName;
     }
 
-    die();
     $transport = parent::_prepareSpecificInformation($transport);
 
     return $transport->setData(array_merge($data, $transport->getData()));
