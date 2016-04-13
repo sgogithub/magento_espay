@@ -31,22 +31,24 @@
 <h2 style="text-align: center;" class="sub-title"><?php echo $this->__('We are Redirecting You to The Payment Page') ?></h2>
 <p style="text-align: center;"><?php echo $this->__('Your order # is: <b>'.$orderId.'</b>') ?></p>
 <p style="text-align: center;"><?php echo $this->__('Please Do Not <b>Close</b>, <b>Refresh</b>,or click <b>Back</b> on this page') ?></p>
+<script type="text/javascript" src="<?php echo $urlJs?>/js/jquery/jquery.browser.js"></script>
 
 <script type="text/javascript" src="<?php echo $urlJs?>/public/signature/js"></script>
         <script type="text/javascript">
-            window.onload = function () {
-                var data = {
-                    paymentId: '<?php echo $orderId;?>',
-                    key: '<?php echo $key;?>',
-                    backUrl: encodeURIComponent('<?php echo Mage::helper('espaypaymentmethod')->getBackUrl($productCode, $orderId); ?>'),
-                    bankCode:'<?= $bankCode?>',
-                    bankProduct :'<?= $productCode?>'
-                },
-                sgoPlusIframe = document.getElementById("sgoplus-iframe");
-                if (sgoPlusIframe !== null) {
-                    sgoPlusIframe.src = SGOSignature.getIframeURL(data);
-                }
-                SGOSignature.receiveForm();
-            };
+        $j = jQuery.noConflict();
+        $j( document ).ready(function() {
+          var data = {
+                   paymentId: '<?php echo $orderId;?>',
+                   key: '<?php echo $key;?>',
+                   backUrl: encodeURIComponent('<?php echo Mage::helper('espaypaymentmethod')->getBackUrl($productCode, $orderId); ?>'),
+                   bankCode:'<?= $bankCode?>',
+                   bankProduct :'<?= $productCode?>'
+               },
+               sgoPlusIframe = document.getElementById("sgoplus-iframe");
+               if (sgoPlusIframe !== null) {
+                   sgoPlusIframe.src = SGOSignature.getIframeURL(data);
+               }
+         SGOSignature.receiveForm();
+        });
         </script>
 <iframe id="sgoplus-iframe" src="" scrolling="no" allowtransparency="true" frameborder="0" height="300"></iframe>
