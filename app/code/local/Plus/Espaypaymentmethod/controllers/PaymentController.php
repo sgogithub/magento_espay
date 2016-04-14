@@ -36,19 +36,6 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
   }
 
 
-  public function gatewayAction()
-  {
-    if ($this->getRequest()->get("orderId"))
-    {
-      $arr_querystring = array(
-        'flag' => 1,
-        'orderId' => $this->getRequest()->get("orderId")
-      );
-
-      Mage_Core_Controller_Varien_Action::_redirect('espaypaymentmethod/payment/response', array('_secure' => false, '_query'=> $arr_querystring));
-    }
-  }
-
   public function redirectAction()
   {
     $orderIncrementId = $this->_getCheckout()->getLastRealOrderId();
@@ -60,13 +47,12 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
     $paymentData = $sessionId->getEspayPaymentMethod();
     $espayPayment = explode(':', $paymentData);
 
-    #var_dump($paymentData);
     $productCode = $espayPayment[0];
     $bankCode = $espayPayment[1];
 
+
     $urlJs =   Mage::getStoreConfig('payment/espay/environmentt') == 'production'? 'https://secure.sgo.co.id' : 'http://secure-dev.sgo.co.id';
     $key =   Mage::getStoreConfig('payment/espay/paymentid');
-
     Mage::getSingleton('checkout/session')->unsQuoteId();
     foreach( Mage::getSingleton('checkout/session')->getQuote()->getItemsCollection() as $item ){
       Mage::getSingleton('checkout/cart')->removeItem( $item->getId() )->save();
@@ -131,11 +117,13 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
        $this->getLayout()->createBlock('adminhtml/sales_order_view_tab_invoices')->toHtml()
     );
 
+
     $password =   Mage::getStoreConfig('payment/espay/password');
     $defaultPaymentStatus = Mage::getStoreConfig('payment/espay/default_order_status');
 
     $webServicePassword = $this->getRequest()->getPost('password');
     $orderId = $this->getRequest()->getPost('order_id');
+    $paymentRef = $this->getRequest()->getPost('payment_ref');
     if ($webServicePassword ==  $password){
       $order = Mage::getModel('sales/order')
           ->loadByIncrementId($orderId);
@@ -144,10 +132,12 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
       if (!empty($orderData)){
         if ($orderData['status'] === $defaultPaymentStatus){
             try {
-              $order->setState(Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW, true, 'Payment Success.');
+              $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, 'Payment Success With Ref <b>'.$paymentRef.'</b>.');
+              $order->setStatus('payment_accepted_espay');
               $order->save();
               $order->sendNewOrderEmail();
           		$order->setEmailSent(true);
+
               $status = '0';
               $message = 'success';
             } catch (Exception $e) {

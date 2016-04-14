@@ -1,44 +1,50 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <config>
   <modules>
     <Plus_Espaypaymentmethod>
-      <version>1.0.0.1</version>
+      <version>1.0.0.2</version>
     </Plus_Espaypaymentmethod>
   </modules>
-
   <global>
-
     <helpers>
       <espaypaymentmethod>
         <class>Plus_Espaypaymentmethod_Helper</class>
       </espaypaymentmethod>
     </helpers>
-
     <blocks>
       <espaypaymentmethod>
         <class>Plus_Espaypaymentmethod_Block</class>
       </espaypaymentmethod>
     </blocks>
-
     <models>
       <espaypaymentmethod>
         <class>Plus_Espaypaymentmethod_Model</class>
       </espaypaymentmethod>
     </models>
-
     <resources>
       <espaypaymentmethod_setup>
         <setup>
           <module>Plus_Espaypaymentmethod</module>
           <class>Plus_Espaypaymentmethod_Model_Resource_Setup</class>
         </setup>
-       <connection>
-           <use>core_setup</use>
-       </connection>
+        <connection>
+          <use>core_setup</use>
+        </connection>
       </espaypaymentmethod_setup>
     </resources>
+    <events>
+      <sales_order_place_after>
+        <observers>
+          <plus_espaypaymentmethod>
+            <type>singleton</type>
+            <class>Plus_Espaypaymentmethod_Model_Observer</class>
+            <method>savePaymentMethod</method>
+          </plus_espaypaymentmethod>
+        </observers>
+      </sales_order_place_after>
+    </events>
+  
   </global>
-
   <default>
     <payment>
       <espaypaymentmethod>
@@ -55,7 +61,6 @@
       </espaypaymentmethod>
     </payment>
   </default>
-
   <frontend>
     <routers>
       <espaypaymentmethod>
