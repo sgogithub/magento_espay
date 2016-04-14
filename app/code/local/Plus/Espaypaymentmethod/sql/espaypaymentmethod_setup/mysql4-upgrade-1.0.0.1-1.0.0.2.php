@@ -31,8 +31,8 @@ $installer->getConnection()->insertArray(
     array(
         array(
             'status' => 'payment_accepted_espay',
-            'state' => 'espay_payment_state',
-            'is_default' => 1
+            'state' => 'processing',
+            'is_default' => 0
         ),
         array(
             'status' => 'payment_review_espay',
@@ -41,17 +41,17 @@ $installer->getConnection()->insertArray(
         ),
         array(
             'status' => 'payment_canceled_espay',
-            'state' => 'espay_payment_state',
+            'state' => 'processing',
             'is_default' => 0
         ),
         array(
             'status' => 'payment_reversal_espay',
-            'state' => 'espay_payment_state',
+            'state' => 'processing',
             'is_default' => 0
         ),
         array(
             'status' => 'payment_completed_espay',
-            'state' => 'espay_payment_state',
+            'state' => 'processing',
             'is_default' => 0
         ),
 
