@@ -176,7 +176,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
           $orderData = $order->getData();
           if (!empty($orderData)){
-            if ($orderData['state'] === Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW){
+            if ($orderData['status'] === 'payment_accepted_espay'){
               $redirect = TRUE;
             }
           }
