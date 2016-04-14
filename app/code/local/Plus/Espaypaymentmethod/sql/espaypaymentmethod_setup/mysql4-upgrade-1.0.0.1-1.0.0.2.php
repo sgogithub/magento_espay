@@ -36,7 +36,7 @@ $installer->getConnection()->insertArray(
         ),
         array(
             'status' => 'payment_review_espay',
-            'state' => 'espay_payment_state',
+            'state' => 'processing',
             'is_default' => 0
         ),
         array(
