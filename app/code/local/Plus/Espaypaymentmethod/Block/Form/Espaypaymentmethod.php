@@ -17,11 +17,9 @@ class Plus_Espaypaymentmethod_Block_Form_Espaypaymentmethod extends Mage_Payment
    * @return [type]          [description]
    */
   private function _callApiProduct(){
-        $url =   Mage::getStoreConfig('payment/espay/environmentt') == 'production'? 'https://116.90.162.172:812/rest/merchant/merchantinfo' : 'http://116.90.162.170:10809/rest/merchant/merchantinfo';
+        $url =   Mage::getStoreConfig('payment/espay/environment') == 'production'? 'https://116.90.162.172:812/rest/merchant/merchantinfo' : 'http://116.90.162.170:10809/rest/merchant/merchantinfo';
         $key =   Mage::getStoreConfig('payment/espay/paymentid');
         $request = 'key='.$key;
-
-        $url =
 
 
         $curl = curl_init($url);

@@ -14,7 +14,16 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
     $return = '';
 
     if ($status === '0'){
-      $return = '0;'.$message.';'.$order['increment_id'].';'.number_format($order['grand_total'],2,'.' , '').';'.$order['order_currency_code'].';Payment '.$order['increment_id'].';'.date('d/m/Y h:i:s');
+      $amount = floatval($order['grand_total']) - floatval($order['espay_fee_amount']);
+      $espayPayment = explode(':', $order['espay_payment_method']);
+
+      $productCode = $espayPayment[0];
+      if ($productCode === 'CREDITCARD' || $productCode === 'BNIDBO'){
+
+        $amount = floatval($order['grand_total']) - floatval( Mage::getStoreConfig('payment/espay/creditcardtrxfee')) ;
+
+      }
+      $return = '0;'.$message.';'.$order['increment_id'].';'.number_format($amount,2,'.' , '').';'.$order['order_currency_code'].';Payment '.$order['increment_id'].';'.date('d/m/Y h:i:s');
     }else {
       $return = '1;'.$message.';;;;;';
     }
@@ -51,7 +60,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
     $bankCode = $espayPayment[1];
 
 
-    $urlJs =   Mage::getStoreConfig('payment/espay/environmentt') == 'production'? 'https://secure.sgo.co.id' : 'http://secure-dev.sgo.co.id';
+    $urlJs =   Mage::getStoreConfig('payment/espay/environment') == 'production'? 'https://secure.sgo.co.id' : 'http://secure-dev.sgo.co.id';
     $key =   Mage::getStoreConfig('payment/espay/paymentid');
     Mage::getSingleton('checkout/session')->unsQuoteId();
     foreach( Mage::getSingleton('checkout/session')->getQuote()->getItemsCollection() as $item ){
@@ -64,7 +73,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
     $this->loadLayout();
     $block = $this->getLayout()->createBlock('Mage_Core_Block_Template','espaypaymentmethod',array('template' => 'espaypaymentmethod/redirect.phtml'));
-    $block->assign(array('urlJs'=>$urlJs,'key'=>$key, 'totalAmount' => $totalAmount, 'orderId' => $orderIncrementId, 'bankCode' => $bankCode, 'productCode' => $productCode));
+    $block->assign(array('urlJs'=>$urlJs,'key'=>$key, 'orderId' => $orderIncrementId, 'bankCode' => $bankCode, 'productCode' => $productCode));
     $this->getLayout()->getBlock('content')->append($block);
     $this->renderLayout();
 
@@ -82,6 +91,8 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
     $password =   Mage::getStoreConfig('payment/espay/password');
     $defaultPaymentStatus = Mage::getStoreConfig('payment/espay/default_order_status');
+    $ccTrxFee = Mage::getStoreConfig('payment/espay/ccfee');
+
 
     $webServicePassword = $this->getRequest()->getPost('password');
     $orderId = $this->getRequest()->getPost('order_id');
@@ -91,6 +102,9 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
           ->loadByIncrementId($orderId);
 
       $orderData = $order->getData();
+      $orderData['ccfee'] = $ccTrxFee;
+      $orderData['espay_payment_method'] = $order->getPayment()->getData('espay_payment_method');
+
       if (!empty($orderData)){
         if ($orderData['status'] === $defaultPaymentStatus){
             echo $this->_getResponseInquiry('0','Success' ,$orderData);
@@ -132,11 +146,21 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
       if (!empty($orderData)){
         if ($orderData['status'] === $defaultPaymentStatus){
             try {
+
+              $invoice = $order->prepareInvoice();
+
+              $invoice->register();
+              Mage::getModel('core/resource_transaction')
+                ->addObject($invoice)
+                ->addObject($invoice->getOrder())
+                ->save();
+              $invoice->sendEmail(true, '');
+
               $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, 'Payment Success With Ref <b>'.$paymentRef.'</b>.');
               $order->setStatus('payment_accepted_espay');
               $order->save();
-              $order->sendNewOrderEmail();
-          		$order->setEmailSent(true);
+              #$order->sendNewOrderEmail();
+          		#$$order->setEmailSent(true);
 
               $status = '0';
               $message = 'success';

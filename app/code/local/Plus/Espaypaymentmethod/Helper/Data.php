@@ -10,6 +10,10 @@ class Plus_Espaypaymentmethod_Helper_Data extends Mage_Core_Helper_Abstract
     return Mage::getUrl('espaypaymentmethod/payment/response', array('_secure' => false,   '_use_rewrite' => true, '_query' => array('id' => $orderId, 'product' => $product)));
   }
 
+  function getTrxFeeLabel(){
+    return Mage::getStoreConfig('payment/espay/trxfeelabel');
+  }
+
 
 }
  ?>

@@ -2,10 +2,39 @@
 <config>
   <modules>
     <Plus_Espaypaymentmethod>
-      <version>1.0.0.2</version>
+      <version>1.0.0.3</version>
     </Plus_Espaypaymentmethod>
   </modules>
   <global>
+    <sales>
+     <quote>
+       <totals>
+         <espaypaymentmethod>
+           <class>espaypaymentmethod/sales_quote_address_total_espaypaymentmethodfee</class>
+           <renderer>espaypaymentmethod/checkout_totals_espaypaymentmethodfee</renderer>
+           <admin_renderer>espaypaymentmethod/adminhtml_sales_order_create_totals_espaypaymentmethodfee</admin_renderer>
+         </espaypaymentmethod>
+       </totals>
+     </quote>
+     <order_invoice>
+      <totals>
+        <espaypaymentmethod>
+          <class>espaypaymentmethod/sales_order_total_invoice_espaypaymentmethodfee</class>
+          <after>tax</after>
+          <before>grand_total</before>
+        </espaypaymentmethod>
+      </totals>
+    </order_invoice>
+    <order_creditmemo>
+     <totals>
+       <espaypaymentmethod>
+         <class>espaypaymentmethod/sales_order_total_creditmemo_espaypaymentmethodfee</class>
+         <after>tax</after>
+         <before>grand_total</before>
+       </espaypaymentmethod>
+     </totals>
+   </order_creditmemo>
+     </sales>
     <helpers>
       <espaypaymentmethod>
         <class>Plus_Espaypaymentmethod_Helper</class>
@@ -20,6 +49,11 @@
       <espaypaymentmethod>
         <class>Plus_Espaypaymentmethod_Model</class>
       </espaypaymentmethod>
+      <sales>
+        <rewrite>
+            <order>Plus_Espaypaymentmethod_Model_Sales_Order</order>
+        </rewrite>
+    </sales>
     </models>
     <resources>
       <espaypaymentmethod_setup>
@@ -42,9 +76,75 @@
           </plus_espaypaymentmethod>
         </observers>
       </sales_order_place_after>
-    </events>
-  
+      <sales_order_invoice_save_after>
+       <observers>
+         <sales_order_invoice_save_after>
+           <class>Plus_Espaypaymentmethod_Model_Observer</class>
+           <method>invoiceSaveAfter</method>
+         </sales_order_invoice_save_after>
+       </observers>
+     </sales_order_invoice_save_after>
+     <sales_order_creditmemo_save_after>
+       <observers>
+         <sales_order_creditmemo_save_after>
+           <class>Plus_Espaypaymentmethod_Model_Observer</class>
+           <method>creditmemoSaveAfter</method>
+         </sales_order_creditmemo_save_after>
+       </observers>
+     </sales_order_creditmemo_save_after>
+   </events>
+    <fieldsets>
+      <sales_convert_quote_address>
+        <espay_fee_amount>
+          <to_order>*</to_order>
+        </espay_fee_amount>
+        <base_espay_fee_amount>
+          <to_order>*</to_order>
+        </base_espay_fee_amount>
+      </sales_convert_quote_address>
+      <sales_convert_quote>
+        <espay_fee_amount>
+          <to_order>*</to_order>
+        </espay_fee_amount>
+        <base_espay_fee_amount>
+          <to_order>*</to_order>
+        </base_espay_fee_amount>
+        </sales_convert_quote>
+
+        <sales_convert_order>
+          <espay_fee_amount>
+            <to_order>*</to_order>
+          </espay_fee_amount>
+          <base_espay_fee_amount>
+            <to_order>*</to_order>
+          </base_espay_fee_amount>
+        </sales_convert_order>
+    </fieldsets>
+    <pdf>
+      <totals>
+        <espaypaymentmethod translate="title">
+          <title>Fee</title>
+          <source_field>fee_amount</source_field>
+          <font_size>7</font_size>
+          <display_zero>0</display_zero>
+          <sort_order>650</sort_order>
+          <amount_prefix>
+          </amount_prefix>
+        </espaypaymentmethod>
+      </totals>
+    </pdf>
   </global>
+  <adminhtml>
+    <layout>
+      <updates>
+        <espaypaymentmethod>
+          <file>espaypaymentmethodfee.xml</file>
+        </espaypaymentmethod>
+      </updates>
+    </layout>
+
+  </adminhtml>
+
   <default>
     <payment>
       <espaypaymentmethod>
@@ -58,6 +158,7 @@
         <max_order_total>100000000</max_order_total>
         <credit_card_fee>3%</credit_card_fee>
         <transaction_fee>5000</transaction_fee>
+        <transaction_fee_label>Transaction Fee</transaction_fee_label>
       </espaypaymentmethod>
     </payment>
   </default>
@@ -71,5 +172,12 @@
         </args>
       </espaypaymentmethod>
     </routers>
+    <layout>
+        <updates>
+          <espaypaymentmethod>
+            <file>espaypaymentmethodfee.xml</file>
+          </espaypaymentmethod>
+        </updates>
+    </layout>
   </frontend>
 </config>

@@ -33,6 +33,6 @@
  * @package     Plus Espay Payment Method
  * @author      Espay Patment Gateway Team
  */
-class Plus_Espaypaymentmethod_Model_Resource_Setup  extends Mage_Core_Model_Resource_Setup {
+class Plus_Espaypaymentmethod_Model_Resource_Setup  extends Mage_Sales_Model_Resource_Setup {
 
 }
