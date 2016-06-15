@@ -227,12 +227,30 @@
                 <show_in_website>1</show_in_website>
                 <show_in_store>0</show_in_store>
             </transaction_fee_bitcoin>
+              <transaction_fee_sgoemoney translate="label">
+                <label>Transaction Fee Pin</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/sgoemoneytrxfee</config_path>
+                <sort_order>22</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_sgoemoney>
+              <transaction_fee_emoedikk2 translate="label">
+                <label>Transaction Fee Unik</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/emoedikk2trxfee</config_path>
+                <sort_order>23</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_emoedikk2>
 
             <transaction_fee_label>
                 <label>Transaction Fee Label</label>
                 <frontend_type>text</frontend_type>
                 <config_path>payment/espay/trxfeelabel</config_path>
-                <sort_order>22</sort_order>
+                <sort_order>24</sort_order>
                 <show_in_default>1</show_in_default>
                 <show_in_website>1</show_in_website>
                 <show_in_store>0</show_in_store>
