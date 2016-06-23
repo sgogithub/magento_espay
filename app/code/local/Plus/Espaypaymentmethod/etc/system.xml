@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+<config>
+  <sections>
+    <payment>
+      <groups>
+        <espaypaymentmethod translate="label" module="espaypaymentmethod">
+          <label>Espay Payment Gateway</label>
+          <sort_order>1000</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>0</show_in_store>
+          <fields>
+            <server_key_v2>
+              <label>Payment Key</label>
+              <config_path>payment/espay/paymentid</config_path>
+              <frontend_type>text</frontend_type>
+              <sort_order>1</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </server_key_v2>
+            <service_pass>
+              <label>Service Password</label>
+              <config_path>payment/espay/password</config_path>
+              <frontend_type>text</frontend_type>
+              <sort_order>2</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </service_pass>
+            <environment>
+              <label>Environment</label>
+              <config_path>payment/espay/environment</config_path>
+              <frontend_type>select</frontend_type>
+              <source_model>espaypaymentmethod/system_config_source_api_environment</source_model>
+              <sort_order>4</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+              <comment>Change to 'Production' once your store is going live</comment>
+            </environment>
+
+            <title translate="label">
+              <label>Title</label>
+              <frontend_type>text</frontend_type>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <sort_order>3</sort_order>
+            </title>
+            <active translate="label">
+              <label>Enabled</label>
+              <frontend_type>select</frontend_type>
+              <source_model>adminhtml/system_config_source_yesno</source_model>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <sort_order>4</sort_order>
+            </active>
+            <order_status translate="label">
+              <label>New order status</label>
+              <frontend_type>select</frontend_type>
+              <config_path>payment/espay/default_order_status</config_path>
+              <source_model>adminhtml/system_config_source_order_status</source_model>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>0</show_in_store>
+              <sort_order>5</sort_order>
+            </order_status>
+            <allowspecific translate="label">
+              <label>Payment from applicable countries</label>
+              <frontend_type>allowspecific</frontend_type>
+              <source_model>adminhtml/system_config_source_payment_allspecificcountries</source_model>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+              <sort_order>6</sort_order>
+            </allowspecific>
+            <specificcountry translate="label">
+              <label>Payment from Specific countries</label>
+              <frontend_type>multiselect</frontend_type>
+              <source_model>adminhtml/system_config_source_country</source_model>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+              <sort_order>7</sort_order>
+            </specificcountry>
+            <min_order_total translate="label">
+                <label>Minimum Order Total</label>
+                <frontend_type>text</frontend_type>
+                <sort_order>8</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </min_order_total>
+            <max_order_total translate="label">
+                <label>Maximum Order Total</label>
+                <frontend_type>text</frontend_type>
+                <sort_order>9</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </max_order_total>
+            <credit_card_fee translate="label">
+                <label>Credit Card MDR</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/ccfee</config_path>
+                <sort_order>10</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </credit_card_fee>
+            <transaction_fee_bca_klikpay translate="label">
+                <label>Transaction Fee BCA KlikPay</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/bcaklikpaytrxfee</config_path>
+                <sort_order>11</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_bca_klikpay>
+            <transaction_fee_epay_bri translate="label">
+                <label>Transaction Fee Epay Bri</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/epaybritrxfee</config_path>
+                <sort_order>12</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_epay_bri>
+            <transaction_fee_mandiri_ib translate="label">
+                <label>Transaction Fee Mandiri Internet Banking</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/mandiriibtrxfee</config_path>
+                <sort_order>13</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_mandiri_ib>
+            <transaction_fee_mandiri_ecash translate="label">
+                <label>Transaction Fee Mandiri Ecash</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/mandiriecashtrxfee</config_path>
+                <sort_order>14</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_mandiri_ecash>
+            <transaction_fee_mandiri_creditcard translate="label">
+                <label>Transaction Fee Credit Card</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/creditcardtrxfee</config_path>
+                <sort_order>15</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_mandiri_creditcard>
+            <transaction_fee_danamon_ob translate="label">
+                <label>Transaction Fee Danamon OB</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/danamonobtrxfee</config_path>
+                <sort_order>16</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_danamon_ob>
+            <transaction_fee_permatanet_pay translate="label">
+                <label>Transaction Fee Permata Net Pay</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/permatanetpaytrxfee</config_path>
+                <sort_order>17</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_permatanet_pay>
+            <transaction_fee_permata_atm translate="label">
+                <label>Transaction Fee Permata ATM</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/permataatmtrxfee</config_path>
+                <sort_order>16</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_permata_atm>
+            <transaction_fee_bii_atm translate="label">
+                <label>Transaction Fee BII ATM</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/biiatmtrxfee</config_path>
+                <sort_order>17</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_bii_atm>
+            <transaction_fee_nobupay translate="label">
+                <label>Transaction Fee Nobupay</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/nobupaytrxfee</config_path>
+                <sort_order>18</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_nobupay>
+            <transaction_fee_finpay translate="label">
+                <label>Transaction Fee Finpay</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/finpaytrxfee</config_path>
+                <sort_order>19</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_finpay>
+            <transaction_fee_mayapada_ib translate="label">
+                <label>Transaction Fee Mayapada Internet Banking</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/mayapadaibtrxfee</config_path>
+                <sort_order>20</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_mayapada_ib>
+            <transaction_fee_bitcoin translate="label">
+                <label>Transaction Fee Bitcoin</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/bitcointrxfee</config_path>
+                <sort_order>21</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_bitcoin>
+              <transaction_fee_sgoemoney translate="label">
+                <label>Transaction Fee Pin</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/sgoemoneytrxfee</config_path>
+                <sort_order>22</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_sgoemoney>
+              <transaction_fee_emoedikk2 translate="label">
+                <label>Transaction Fee Unik</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/emoedikk2trxfee</config_path>
+                <sort_order>23</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_emoedikk2>
+
+            <transaction_fee_label>
+                <label>Transaction Fee Label</label>
+                <frontend_type>text</frontend_type>
+                <config_path>payment/espay/trxfeelabel</config_path>
+                <sort_order>24</sort_order>
+                <show_in_default>1</show_in_default>
+                <show_in_website>1</show_in_website>
+                <show_in_store>0</show_in_store>
+            </transaction_fee_label>
+          </fields>
+        </espaypaymentmethod>
+      </groups>
+    </payment>
+  </sections>
+</config>

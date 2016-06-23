@@ -1,0 +1,29 @@
+<div class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
+  <table border="0">
+
+  <?php foreach ($this->getProducts() as $products):?>
+  <div>
+  <tr style="padding: 10px;">
+      <td style="padding: 2px;">
+        <span>
+          <?php $testing = $products->productCode.':'.$products->bankCode.':'.$products->productName ?>
+
+          <input type="radio" title="<?php  $products->productName ?>" name="payment[espay_payment_method]" <?php echo (trim($this->getInfoData('espay_payment_method')) ==  $testing ? 'checked="checked"' : '')?> value="<?php echo $testing?>" />
+        </span>
+      </td>
+      <td style="padding: 2px;">
+        <label><img height='80' width='90' src="https://secure.sgo.co.id/images/products/<?=$products->productCode?>.png"></label>
+      </td>
+      <td style="padding: 2px 2px 2px 5px;">
+          <label style='font-family: Georgia,Times,"Times New Roman",serif;font-style: italic;'> <?php echo $this->__('Payment Using')?> <?=$products->productName?></label>
+      </td>
+    </tr>
+
+  </div>
+
+  <?php endforeach?>
+  </table>
+</div>
+<div>
+    <?php echo $this->getMethod()->getConfigData('message');?>
+</div>
