@@ -129,6 +129,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
         $webServicePassword = $this->getRequest()->getPost('password');
         $orderId = $this->getRequest()->getPost('order_id');
         $paymentRef = $this->getRequest()->getPost('payment_ref');
+        #var_dump($orderId);
         if ($webServicePassword == $password) {
             $order = Mage::getModel('sales/order')
                     ->loadByIncrementId($orderId);
@@ -182,10 +183,14 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
         $redirect = FALSE;
         $productModel = Mage::getModel('espaypaymentmethod/paymentmethod');
         $atmProducts = $productModel->atmProduct();
+       
+        $atm = FALSE;
+        
         if ($this->getRequest()->get("id") && $this->getRequest()->get("product")) {
             if ($this->getRequest()->get("product") !== '' && $this->getRequest()->get("id") !== '') {
                 if (in_array($this->getRequest()->get("product"), $atmProducts)) {
                     $redirect = TRUE;
+                    $atm = TRUE;
                 } else {
                     $order = Mage::getModel('sales/order')
                             ->loadByIncrementId($this->getRequest()->get("id"));
@@ -199,13 +204,34 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
                 }
             }
         }
-
-
+       
+        
         if ($redirect) {
-            Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure' => false));
+            if ($atm === TRUE){
+                Mage_Core_Controller_Varien_Action::_redirect( 'espaypaymentmethod/payment/pending', array('_secure' => false,   '_use_rewrite' => true, '_query' => array('id' => $this->getRequest()->get("id"))));
+            }else {
+                Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure' => false));
+            }
+            
         } else {
             Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/failure', array('_secure' => false));
         }
     }
+    
+    
+    public function pendingAction() {
+       
+        $increment_id = $this->getRequest()->get("id");
+        $order = Mage::getModel('sales/order')->loadByIncrementId($increment_id); 
+       
+        $this->loadLayout();
+        $block = $this->getLayout()->createBlock('Mage_Core_Block_Template', 'espaypaymentmethod', array('template' => 'espaypaymentmethod/pending.phtml'));
+        $block->assign(array('incrementId' => $increment_id, 'orderId' => $order->entity_id));
+        $this->getLayout()->getBlock('content')->append($block);
+        $this->renderLayout();
+        
+       
+    }
+    
 
 }

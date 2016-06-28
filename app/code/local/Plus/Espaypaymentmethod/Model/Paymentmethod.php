@@ -57,7 +57,10 @@ class Plus_Espaypaymentmethod_Model_Paymentmethod extends Mage_Payment_Model_Met
           'BIIATM',
           'PERMATAATM',
           'MUAMALATATM',
-          'BCAATM'
+          'BCAATM',
+          'FINPAY195',
+          'XLTUNAI',
+          'TCASH'
       );
   }
 

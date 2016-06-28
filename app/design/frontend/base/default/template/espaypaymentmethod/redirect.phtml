@@ -40,7 +40,7 @@
           var data = {
                    paymentId: '<?php echo $orderId;?>',
                    key: '<?php echo $key;?>',
-                   backUrl: encodeURIComponent('<?php echo Mage::helper('espaypaymentmethod')->getBackUrl($productCode, $orderId); ?>'),
+                   backUrl: escape('<?php echo Mage::helper('espaypaymentmethod')->getBackUrl($productCode, $orderId); ?>'),
                    bankCode:'<?= $bankCode?>',
                    bankProduct :'<?= $productCode?>'
                },
