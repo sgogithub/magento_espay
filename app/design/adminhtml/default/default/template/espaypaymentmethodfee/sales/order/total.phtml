@@ -1,0 +1,11 @@
+
+<?php $this->setPriceDataObject($this->getSource()) ?>
+
+<?php if ((float) $this->getSource()->getEspayFeeAmount()): ?>
+    <tr>
+        <td class="label"><?php echo Mage::helper('espaypaymentmethod/data')->getTrxFeeLabel() ?></td>
+        <td>
+            <?php echo $this->displayPrices($this->getSource()->getBaseEspayFeeAmount(), $this->getSource()->getEspayFeeAmount()); ?>
+        </td>
+    </tr>
+<?php endif; ?>

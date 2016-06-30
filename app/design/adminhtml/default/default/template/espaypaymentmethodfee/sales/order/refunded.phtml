@@ -1,0 +1,19 @@
+<?php if($this->getSource() instanceof Mage_Sales_Model_Order): ?>
+
+    <?php if ((float)$this->getSource()->getEspayFeeAmountRefunded() > 0): ?>
+        <tr>
+            <td class="label"><strong><?php echo Mage::helper('espaypaymentmethodfee/data')->__('Fee refunded to customer') ?></strong></td>
+            <td><strong><?php echo $this->getSource()->getEspayFeeAmountRefunded(); ?></strong></td>
+        </tr>
+    <?php endif; ?>
+
+<?php else: ?>
+
+    <?php if ((float)$this->getSource()->getEspayFeeAmount()): ?>
+        <tr>
+            <td class="label"><strong><?php echo Mage::helper('espaypaymentmethodfee/data')->__('Fee Refunded') ?></strong></td>
+            <td><strong><?php echo $this->getSource()->getEspayFeeAmount(); ?></strong></td>
+        </tr>
+    <?php endif;  ?>
+
+<?php endif; ?>
