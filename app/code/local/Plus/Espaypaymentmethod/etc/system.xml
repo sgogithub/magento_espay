@@ -28,6 +28,16 @@
               <show_in_website>1</show_in_website>
               <show_in_store>1</show_in_store>
             </service_pass>
+             <signature_pass>
+                 
+              <label>Signature Password</label>
+              <config_path>payment/espay/sigpassword</config_path>
+              <frontend_type>password</frontend_type>
+              <sort_order>2</sort_order>
+              <show_in_default>1</show_in_default>
+              <show_in_website>1</show_in_website>
+              <show_in_store>1</show_in_store>
+            </signature_pass>
             <environment>
               <label>Environment</label>
               <config_path>payment/espay/environment</config_path>

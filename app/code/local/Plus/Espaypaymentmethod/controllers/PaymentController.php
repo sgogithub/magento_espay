@@ -89,27 +89,38 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
 
         $webServicePassword = $this->getRequest()->getPost('password');
+        $signature = $this->getRequest()->getPost('signature');
         $orderId = $this->getRequest()->getPost('order_id');
+        $rqDatetime = $this->getRequest()->getPost('rq_datetime');
+        $mode = 'INQUIRY';
+        $selfSignature = Mage::helper('espaypaymentmethod/data')->generateTrxSignature($rqDatetime, $orderId, $mode);
 
-        if ($webServicePassword == $password) {
-            $order = Mage::getModel('sales/order')
-                    ->loadByIncrementId($orderId);
 
-            $orderData = $order->getData();
-            $orderData['ccfee'] = $ccTrxFee;
-            $orderData['espay_payment_method'] = $order->getPayment()->getData('espay_payment_method');
+        if ($signature === $selfSignature) {
+            if ($webServicePassword == $password) {
+                $order = Mage::getModel('sales/order')
+                        ->loadByIncrementId($orderId);
 
-            if (!empty($orderData)) {
-                if ($orderData['status'] === $defaultPaymentStatus) {
-                    echo $this->_getResponseInquiry('0', 'Success', $orderData);
+                $orderData = $order->getData();
+
+
+                if (!empty($orderData)) {
+                    $orderData['ccfee'] = $ccTrxFee;
+                    $orderData['espay_payment_method'] = $order->getPayment()->getData('espay_payment_method');
+
+                    if ($orderData['status'] === $defaultPaymentStatus) {
+                        echo $this->_getResponseInquiry('0', 'Success', $orderData);
+                    } else {
+                        echo $this->_getResponseInquiry('1', 'Order Has been Processed');
+                    }
                 } else {
-                    echo $this->_getResponseInquiry('1', 'Order Has been Processed');
+                    echo $this->_getResponseInquiry('1', 'Order Id Not Valid');
                 }
             } else {
-                echo $this->_getResponseInquiry('1', 'Order Id Not Valid');
+                echo $this->_getResponseInquiry('1', 'Failed');
             }
         } else {
-            echo $this->_getResponseInquiry('1', 'Failed');
+            echo $this->_getResponseInquiry('1', 'Invalid Signature');
         }
     }
 
@@ -125,56 +136,68 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
         $password = Mage::getStoreConfig('payment/espay/password');
         $defaultPaymentStatus = Mage::getStoreConfig('payment/espay/default_order_status');
-
+        
+        
         $webServicePassword = $this->getRequest()->getPost('password');
         $orderId = $this->getRequest()->getPost('order_id');
         $paymentRef = $this->getRequest()->getPost('payment_ref');
-        #var_dump($orderId);
-        if ($webServicePassword == $password) {
-            $order = Mage::getModel('sales/order')
-                    ->loadByIncrementId($orderId);
 
-            $orderData = $order->getData();
-            if (!empty($orderData)) {
-                if ($orderData['status'] === $defaultPaymentStatus) {
-                    try {
+        $signature = $this->getRequest()->getPost('signature');
+        $rqDatetime = $this->getRequest()->getPost('rq_datetime');
+        $mode = 'PAYMENTREPORT';
 
-                        $invoice = $order->prepareInvoice();
+        $selfSignature = Mage::helper('espaypaymentmethod/data')->generateTrxSignature($rqDatetime, $orderId, $mode);
 
-                        $invoice->setTransactionId();
-                        $invoice->addComment('Payment successfully processed by Veritrans.');
-                        $invoice->register();
-                        $invoice->pay();
+        if ($signature === $selfSignature) {
+            if ($webServicePassword == $password) {
+                $order = Mage::getModel('sales/order')
+                        ->loadByIncrementId($orderId);
 
-                        Mage::getModel('core/resource_transaction')
-                                ->addObject($invoice)
-                                ->addObject($invoice->getOrder($order->getId()))
-                                ->save();
-                        #$invoice->sendEmail(true, '');
+                $orderData = $order->getData();
+                if (!empty($orderData)) {
+                    if ($orderData['status'] === $defaultPaymentStatus) {
+                        try {
 
-                        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, 'Payment Success With Ref <b>' . $paymentRef . '</b>.');
-                        $order->setStatus('payment_accepted_espay');
-                        $order->save();
-                        $order->sendOrderUpdateEmail(true, 'Thank you, your payment is successfully processed.');
-                        #$$order->setEmailSent(true);
+                            $invoice = $order->prepareInvoice();
 
-                        $status = '0';
-                        $message = 'success';
-                    } catch (Exception $e) {
+                            $invoice->setTransactionId();
+                            $invoice->addComment('Payment successfully processed by Veritrans.');
+                            $invoice->register();
+                            $invoice->pay();
+
+                            Mage::getModel('core/resource_transaction')
+                                    ->addObject($invoice)
+                                    ->addObject($invoice->getOrder($order->getId()))
+                                    ->save();
+                            #$invoice->sendEmail(true, '');
+
+                            $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, 'Payment Success With Ref <b>' . $paymentRef . '</b>.');
+                            $order->setStatus('payment_accepted_espay');
+                            $order->save();
+                            $order->sendOrderUpdateEmail(true, 'Thank you, your payment is successfully processed.');
+                            #$$order->setEmailSent(true);
+
+                            $status = '0';
+                            $message = 'success';
+                        } catch (Exception $e) {
+                            $status = '1';
+                            $message = 'Update Order Failed';
+                        }
+                    } else {
                         $status = '1';
-                        $message = 'Update Order Failed';
+                        $message = 'Order has been processed';
                     }
                 } else {
                     $status = '1';
-                    $message = 'Order has been processed';
+                    $message = 'Order Id Not Valid';
                 }
             } else {
                 $status = '1';
-                $message = 'Order Id Not Valid';
+                $message = 'Failed';
             }
         } else {
             $status = '1';
-            $message = 'Failed';
+            $message = 'Invalid Signature';
         }
         echo $this->_getResponseReport($status, $message, $orderData);
     }
@@ -183,9 +206,9 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
         $redirect = FALSE;
         $productModel = Mage::getModel('espaypaymentmethod/paymentmethod');
         $atmProducts = $productModel->atmProduct();
-       
+
         $atm = FALSE;
-        
+
         if ($this->getRequest()->get("id") && $this->getRequest()->get("product")) {
             if ($this->getRequest()->get("product") !== '' && $this->getRequest()->get("id") !== '') {
                 if (in_array($this->getRequest()->get("product"), $atmProducts)) {
@@ -204,34 +227,29 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
                 }
             }
         }
-       
-        
+
+
         if ($redirect) {
-            if ($atm === TRUE){
-                Mage_Core_Controller_Varien_Action::_redirect( 'espaypaymentmethod/payment/pending', array('_secure' => false,   '_use_rewrite' => true, '_query' => array('id' => $this->getRequest()->get("id"))));
-            }else {
+            if ($atm === TRUE) {
+                Mage_Core_Controller_Varien_Action::_redirect('espaypaymentmethod/payment/pending', array('_secure' => false, '_use_rewrite' => true, '_query' => array('id' => $this->getRequest()->get("id"))));
+            } else {
                 Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/success', array('_secure' => false));
             }
-            
         } else {
             Mage_Core_Controller_Varien_Action::_redirect('checkout/onepage/failure', array('_secure' => false));
         }
     }
-    
-    
+
     public function pendingAction() {
-       
+
         $increment_id = $this->getRequest()->get("id");
-        $order = Mage::getModel('sales/order')->loadByIncrementId($increment_id); 
-       
+        $order = Mage::getModel('sales/order')->loadByIncrementId($increment_id);
+
         $this->loadLayout();
         $block = $this->getLayout()->createBlock('Mage_Core_Block_Template', 'espaypaymentmethod', array('template' => 'espaypaymentmethod/pending.phtml'));
         $block->assign(array('incrementId' => $increment_id, 'orderId' => $order->entity_id));
         $this->getLayout()->getBlock('content')->append($block);
         $this->renderLayout();
-        
-       
     }
-    
 
 }
