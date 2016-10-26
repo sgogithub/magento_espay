@@ -34,10 +34,6 @@ $installer->getConnection()->insertArray(
     array('status' => 'payment_accepted_espay_permataatm', 'label' => 'Payment Accepted Via ESPay PERMATA ATM'),
     array('status' => 'payment_accepted_espay_permatapeb', 'label' => 'Payment Accepted Via ESPay Permata ebusiness'),
     array('status' => 'payment_accepted_espay_permatanetpay', 'label' => 'Payment Accepted Via ESPay PermataNet'),
-    array('status' => 'payment_review_espay', 'label' => 'Payment Review'),
-    array('status' => 'payment_canceled_espay', 'label' => 'Payment Canceled'),
-    array('status' => 'payment_reversal_espay', 'label' => 'Payment Reversal'),
-    array('status' => 'payment_completed_espay', 'label' => 'Payment Completed'),
         )
 );
 
@@ -154,26 +150,6 @@ $installer->getConnection()->insertArray(
     ),
     array(
         'status' => 'payment_accepted_espay_permatanetpay',
-        'state' => 'processing',
-        'is_default' => 0
-    ),
-    array(
-        'status' => 'payment_review_espay',
-        'state' => 'processing',
-        'is_default' => 0
-    ),
-    array(
-        'status' => 'payment_canceled_espay',
-        'state' => 'processing',
-        'is_default' => 0
-    ),
-    array(
-        'status' => 'payment_reversal_espay',
-        'state' => 'processing',
-        'is_default' => 0
-    ),
-    array(
-        'status' => 'payment_completed_espay',
         'state' => 'processing',
         'is_default' => 0
     ),
