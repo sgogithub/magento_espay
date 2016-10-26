@@ -136,11 +136,12 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
         $password = Mage::getStoreConfig('payment/espay/password');
         $defaultPaymentStatus = Mage::getStoreConfig('payment/espay/default_order_status');
-        
-        
+
+
         $webServicePassword = $this->getRequest()->getPost('password');
         $orderId = $this->getRequest()->getPost('order_id');
         $paymentRef = $this->getRequest()->getPost('payment_ref');
+        $product_code = $this->getRequest()->getPost('product_code');
 
         $signature = $this->getRequest()->getPost('signature');
         $rqDatetime = $this->getRequest()->getPost('rq_datetime');
@@ -161,7 +162,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
                             $invoice = $order->prepareInvoice();
 
                             $invoice->setTransactionId();
-                            $invoice->addComment('Payment successfully processed by Veritrans.');
+                            $invoice->addComment('Payment successfully processed by Espay.');
                             $invoice->register();
                             $invoice->pay();
 
@@ -172,7 +173,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
                             #$invoice->sendEmail(true, '');
 
                             $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, 'Payment Success With Ref <b>' . $paymentRef . '</b>.');
-                            $order->setStatus('payment_accepted_espay');
+                            $order->setStatus('payment_accepted_espay_' . strtolower($product_code));
                             $order->save();
                             $order->sendOrderUpdateEmail(true, 'Thank you, your payment is successfully processed.');
                             #$$order->setEmailSent(true);
