@@ -207,6 +207,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
         $redirect = FALSE;
         $productModel = Mage::getModel('espaypaymentmethod/paymentmethod');
         $atmProducts = $productModel->atmProduct();
+        $product = $this->getRequest()->get("product");
 
         $atm = FALSE;
 
@@ -221,7 +222,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
 
                     $orderData = $order->getData();
                     if (!empty($orderData)) {
-                        if ($orderData['status'] === 'payment_accepted_espay') {
+                        if ($orderData['status'] === 'payment_accepted_espay_' . strtolower($product)) {
                             $redirect = TRUE;
                         }
                     }
