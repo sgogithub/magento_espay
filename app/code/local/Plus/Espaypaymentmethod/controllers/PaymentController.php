@@ -56,7 +56,7 @@ class Plus_Espaypaymentmethod_PaymentController extends Mage_Core_Controller_Fro
         $bankCode = $espayPayment[1];
 
 
-        $urlJs = Mage::getStoreConfig('payment/espay/environment') == 'production' ? 'https://secure.sgo.co.id' : 'http://secure-dev.sgo.co.id';
+        $urlJs = Mage::getStoreConfig('payment/espay/environment') == 'production' ? 'https://kit.espay.id' : 'https://sandbox-kit.espay.id';
         $key = Mage::getStoreConfig('payment/espay/paymentid');
         Mage::getSingleton('checkout/session')->unsQuoteId();
         foreach (Mage::getSingleton('checkout/session')->getQuote()->getItemsCollection() as $item) {
