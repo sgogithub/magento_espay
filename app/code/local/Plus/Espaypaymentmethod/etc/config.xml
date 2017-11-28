@@ -2,7 +2,7 @@
 <config>
   <modules>
     <Plus_Espaypaymentmethod>
-      <version>1.0.0.4</version>
+      <version>1.0.0.8</version>
     </Plus_Espaypaymentmethod>
   </modules>
   <global>
